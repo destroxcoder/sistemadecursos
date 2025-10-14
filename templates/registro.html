@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Registro de Alumno{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-4 text-center">Crear cuenta de alumno</h1>
+        <form method="post">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre y Apellidos</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" required>
+          </div>
+          <div class="mb-3">
+            <label for="dni" class="form-label">DNI</label>
+            <input type="text" class="form-control" id="dni" name="dni" required>
+          </div>
+          <div class="mb-3">
+            <label for="celular" class="form-label">Número de Celular (opcional)</label>
+            <input type="text" class="form-control" id="celular" name="celular">
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Registrarme</button>
+          </div>
+        </form>
+        <div class="mt-3 text-center">
+          <a href="{{ url_for('acceso') }}">Ya tengo una cuenta</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

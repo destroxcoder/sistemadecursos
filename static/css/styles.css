@@ -1,0 +1,16 @@
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
+
+.card {
+  border: none;
+}
+
+.card .card-body {
+  padding: 2rem;
+}
