@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Registro de Alumno{% endblock %}
+{% block content %}
+<section class="row align-items-center g-5 fade-in-up">
+  <div class="col-lg-6">
+    <div class="hero-copy">
+      <span class="chip chip-light mb-3"><i class="fa-solid fa-star me-2"></i>Primer paso</span>
+      <h1 class="hero-title">Únete y sigue tu progreso en tiempo real</h1>
+      <p class="hero-subtitle">Completa el formulario para acceder a tu panel personalizado con historial de cursos, certificados descargables y avisos de nuevas inscripciones.</p>
+      <ul class="feature-list mt-4">
+        <li><i class="fa-solid fa-check"></i> Seguimiento de cursos actualizado al instante</li>
+        <li><i class="fa-solid fa-check"></i> Certificados seguros con descarga directa</li>
+        <li><i class="fa-solid fa-check"></i> Comunicación directa con el equipo académico</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="glass-card">
+      <div class="glass-card__header mb-4">
+        <span class="chip chip-dark">Registro</span>
+        <h2 class="h4 mt-3 mb-0">Crea tu cuenta de alumno</h2>
+        <p class="text-white-50 mb-0">Tendrás acceso inmediato al portal para revisar tus cursos asignados.</p>
+      </div>
+      <form method="post" class="row g-3">
+        <div class="col-12">
+          <label for="nombre" class="form-label">Nombre y apellidos</label>
+          <div class="input-icon">
+            <span class="input-icon__icon"><i class="fa-solid fa-user"></i></span>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej. María Fernández" required>
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="dni" class="form-label">Documento de identidad</label>
+          <div class="input-icon">
+            <span class="input-icon__icon"><i class="fa-solid fa-id-card"></i></span>
+            <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingresa tu DNI" required>
+          </div>
+        </div>
+        <div class="col-12">
+          <label for="celular" class="form-label">Número de celular <span class="text-white-50">(opcional)</span></label>
+          <div class="input-icon">
+            <span class="input-icon__icon"><i class="fa-solid fa-phone"></i></span>
+            <input type="text" class="form-control" id="celular" name="celular" placeholder="Añade un contacto para avisos">
+          </div>
+        </div>
+        <div class="col-12 d-grid d-sm-flex justify-content-sm-end gap-3 pt-3">
+          <a class="btn btn-outline-light" href="{{ url_for('acceso') }}"><i class="fa-solid fa-arrow-left me-2"></i>Volver</a>
+          <button type="submit" class="btn btn-glow"><i class="fa-solid fa-paper-plane me-2"></i>Registrarme</button>
+        </div>
+      </form>
+      <p class="mt-4 mb-0 text-center text-white-50">¿Ya tienes cuenta? <a class="link-light" href="{{ url_for('acceso') }}">Inicia sesión aquí</a></p>
+    </div>
+  </div>
+</section>
+{% endblock %}

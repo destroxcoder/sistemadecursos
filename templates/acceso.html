@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Acceso al Sistema{% endblock %}
+{% block content %}
+<section class="hero-section row align-items-center g-5">
+  <div class="col-lg-5">
+    <div class="hero-copy fade-in-up">
+      <span class="chip chip-light mb-3"><i class="fa-solid fa-bolt me-2"></i>Bienvenido</span>
+      <h1 class="hero-title">Tu campus digital,<br>con un solo acceso</h1>
+      <p class="hero-subtitle">Gestiona cursos, certificados y estudiantes en un entorno moderno, seguro y adaptable a cualquier dispositivo.</p>
+      <div class="d-flex flex-column flex-sm-row gap-3 mt-4">
+        <a class="btn btn-glow" href="{{ url_for('registro') }}">
+          <i class="fa-solid fa-user-plus me-2"></i>Crear cuenta de alumno
+        </a>
+        <div class="d-inline-flex align-items-center gap-2 text-white-50">
+          <i class="fa-solid fa-lock"></i>
+          <span>Acceso seguro para administradores</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-7">
+    <div class="glass-card fade-in-up delay-1">
+      <div class="glass-card__header d-flex align-items-center justify-content-between">
+        <div>
+          <span class="chip chip-dark">Iniciar sesión</span>
+          <h2 class="h4 mt-3 mb-0">Elige tu rol para continuar</h2>
+        </div>
+        <i class="fa-solid fa-right-to-bracket text-white-50 fs-3"></i>
+      </div>
+      <ul class="nav nav-underline nav-access mt-4" id="access-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="tab-alumno" data-bs-toggle="tab" data-bs-target="#pane-alumno" type="button" role="tab">Soy Alumno</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="tab-admin" data-bs-toggle="tab" data-bs-target="#pane-admin" type="button" role="tab">Administrador</button>
+        </li>
+      </ul>
+      <div class="tab-content mt-4" id="access-tabContent">
+        <div class="tab-pane fade show active" id="pane-alumno" role="tabpanel" aria-labelledby="tab-alumno">
+          <form method="post" class="row g-3">
+            <input type="hidden" name="rol" value="alumno">
+            <div class="col-12">
+              <label for="dni" class="form-label">Documento de identidad</label>
+              <div class="input-icon">
+                <span class="input-icon__icon"><i class="fa-solid fa-id-card"></i></span>
+                <input type="text" class="form-control" id="dni" name="dni" placeholder="Ingresa tu DNI" required>
+              </div>
+            </div>
+            <div class="col-12 d-grid d-sm-flex justify-content-sm-end gap-3">
+              <button type="submit" class="btn btn-primary btn-modern"><i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Acceder</button>
+            </div>
+          </form>
+          <div class="mt-4 text-center text-white-50">
+            ¿Aún no tienes cuenta? <a class="link-light" href="{{ url_for('registro') }}">Regístrate aquí</a>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="pane-admin" role="tabpanel" aria-labelledby="tab-admin">
+          <form method="post" class="row g-3">
+            <input type="hidden" name="rol" value="admin">
+            <div class="col-12">
+              <label for="codigo" class="form-label">Código de acceso</label>
+              <div class="input-icon">
+                <span class="input-icon__icon"><i class="fa-solid fa-shield"></i></span>
+                <input type="password" class="form-control" id="codigo" name="codigo" placeholder="Ingresa tu código seguro" required>
+              </div>
+            </div>
+            <div class="col-12 d-grid d-sm-flex justify-content-sm-end gap-3">
+              <button type="submit" class="btn btn-secondary btn-modern"><i class="fa-solid fa-user-shield me-2"></i>Entrar al panel</button>
+            </div>
+          </form>
+          <p class="mt-4 mb-0 small text-white-50">¿Primera vez aquí? Solicita el código maestro al equipo académico.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Panel de Administración{% endblock %}
+{% block content %}
+<section class="admin-hero fade-in-up">
+  <div>
+    <span class="chip chip-light mb-2"><i class="fa-solid fa-crown me-2"></i>Panel maestro</span>
+    <h1 class="display-6 mb-3">Gestiona alumnos, cursos e inscripciones en tiempo real</h1>
+    <p class="text-white-50 mb-0">Crea, edita o elimina registros con confirmaciones instantáneas y animaciones fluidas impulsadas por React.</p>
+  </div>
+  <div class="admin-actions">
+    <a href="{{ url_for('acceso') }}" class="btn btn-outline-light"><i class="fa-solid fa-arrow-left me-2"></i>Volver al inicio</a>
+    <span class="badge rounded-pill text-bg-light">Modo administrador activo</span>
+  </div>
+</section>
+
+<section class="admin-dashboard mt-4">
+  <div id="admin-app" class="fade-in-up"></div>
+  <script id="initial-data" type="application/json">{{ initial_data|tojson }}</script>
+</section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@1.6.8/dist/axios.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" crossorigin></script>
+  <script src="https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel" src="{{ url_for('static', filename='js/admin-dashboard.jsx') }}"></script>
+{% endblock %}
