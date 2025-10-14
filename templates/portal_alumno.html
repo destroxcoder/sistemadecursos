@@ -1,61 +1,77 @@
 {% extends 'base.html' %}
 {% block title %}Mi Portal de Cursos{% endblock %}
 {% block content %}
-<div class="row">
-  <div class="col-12">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
-          <div>
-            <h1 class="h4 mb-0">Hola, {{ alumno_nombre }} 👋</h1>
-            <p class="text-muted mb-0">Estos son tus cursos registrados.</p>
-          </div>
-          <a href="{{ url_for('salir') }}" class="btn btn-outline-primary mt-3 mt-md-0">Cerrar sesión</a>
-        </div>
-        {% if cursos %}
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Curso</th>
-                <th>Horas</th>
-                <th>Créditos</th>
-                <th>N° de Registro</th>
-                <th>Estado</th>
-                <th>Certificado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for curso in cursos %}
-              <tr>
-                <td>{{ curso['curso_nombre'] }}</td>
-                <td>{{ curso['horas'] }}</td>
-                <td>{{ curso['creditos'] }}</td>
-                <td>{{ curso['numero_registro'] }}</td>
-                <td>
-                  <span class="badge {% if curso['estado'] == 'Finalizado' %}bg-success{% else %}bg-secondary{% endif %}">
-                    {{ curso['estado'] }}
-                  </span>
-                </td>
-                <td>
-                  {% if curso['certificado_url'] %}
-                  <a class="btn btn-sm btn-primary" href="{{ curso['certificado_url'] }}" target="_blank">Descargar</a>
-                  {% else %}
-                  <button class="btn btn-sm btn-outline-secondary" disabled>No disponible</button>
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-        {% else %}
-        <div class="text-center py-5">
-          <p class="text-muted">Aún no tienes cursos asignados. Comunícate con el administrador.</p>
-        </div>
-        {% endif %}
+<section class="student-portal fade-in-up">
+  <div class="portal-header glass-card gradient">
+    <div>
+      <span class="chip chip-light">Bienvenido</span>
+      <h1 class="display-6 mt-3 mb-2">Hola, {{ alumno_nombre }} 👋</h1>
+      <p class="mb-0 text-white-50">Consulta tus cursos activos, descarga certificados y mantén tu avance bajo control.</p>
+    </div>
+    <div class="portal-stats">
+      <div class="stat-card">
+        <span class="stat-label">Cursos inscritos</span>
+        <strong class="stat-value">{{ cursos|length }}</strong>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">Completados</span>
+        <strong class="stat-value">{{ cursos_finalizados }}</strong>
       </div>
     </div>
   </div>
-</div>
+
+  {% if cursos %}
+  <div class="course-grid mt-5">
+    {% for curso in cursos %}
+    <article class="course-card">
+      <header class="course-card__header">
+        <h2 class="course-title">{{ curso['curso_nombre'] }}</h2>
+        <span class="chip {% if curso['estado'] == 'Finalizado' %}chip-success{% else %}chip-dark{% endif %}">
+          <i class="fa-solid {% if curso['estado'] == 'Finalizado' %}fa-circle-check{% else %}fa-circle-notch{% endif %} me-2"></i>
+          {{ curso['estado'] }}
+        </span>
+      </header>
+      <div class="course-card__body">
+        <dl class="course-meta">
+          <div>
+            <dt>Horas lectivas</dt>
+            <dd>{{ curso['horas_lectivas'] }}</dd>
+          </div>
+          <div>
+            <dt>Horas académicas</dt>
+            <dd>{{ curso['horas_academicas'] }}</dd>
+          </div>
+          <div>
+            <dt>Total de horas</dt>
+            <dd>{{ curso['horas'] }}</dd>
+          </div>
+          <div>
+            <dt>Créditos</dt>
+            <dd>{{ curso['creditos'] }}</dd>
+          </div>
+        </dl>
+        <div class="course-register">
+          <span class="label">N° de registro</span>
+          <strong>{{ curso['numero_registro'] }}</strong>
+        </div>
+      </div>
+      <footer class="course-card__footer">
+        {% if curso['certificado_url'] %}
+        <a class="btn btn-glow w-100" href="{{ curso['certificado_url'] }}" target="_blank"><i class="fa-solid fa-file-pdf me-2"></i>Ver certificado</a>
+        {% else %}
+        <button class="btn btn-outline-light w-100" disabled><i class="fa-regular fa-clock me-2"></i>Certificado en preparación</button>
+        {% endif %}
+      </footer>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <div class="empty-state__icon"><i class="fa-solid fa-books"></i></div>
+    <h2 class="h4">Aún no tienes cursos asignados</h2>
+    <p class="text-white-50 mb-4">Cuando el administrador registre tu próxima capacitación, aparecerá aquí automáticamente.</p>
+    <a href="mailto:soporte@instituto.com" class="btn btn-outline-light"><i class="fa-solid fa-envelope me-2"></i>Contactar soporte</a>
+  </div>
+  {% endif %}
+</section>
 {% endblock %}

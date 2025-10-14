@@ -80,6 +80,51 @@ Si deseas que la aplicación esté disponible en tu red local, ejecuta `flask --
 
 7. A partir de aquí, cada vez que hagas cambios repite `git add .`, `git commit -m "mensaje"` y `git push` para publicarlos.
 
+### ¿Qué hacer si GitHub muestra "This branch has conflicts"?
+
+Si en GitHub aparece un aviso de conflictos (por ejemplo, al abrir un Pull Request), significa que tu rama local no incorpora
+los últimos cambios del remoto. Para solucionarlo:
+
+1. Asegúrate de estar en la rama que quieres sincronizar (por ejemplo, `main`):
+
+   ```bash
+   git checkout main
+   ```
+
+2. Descarga los cambios más recientes del remoto e intégralos. Lo más sencillo es usar `git pull --rebase` para mantener un
+   historial limpio:
+
+   ```bash
+   git pull --rebase origin main
+   ```
+
+3. Si Git indica que hay conflictos en archivos concretos, ábrelos, busca las marcas `<<<<<<<`, `=======`, `>>>>>>>` y edítalos
+   dejando solo la versión correcta. Luego marca los archivos como resueltos:
+
+   ```bash
+   git add <archivo_en_conflicto>
+   ```
+
+4. Cuando todos los conflictos estén resueltos, continúa el _rebase_ o el _merge_ que se estaba realizando (Git lo indicará en la
+   terminal). Habitualmente bastará con ejecutar:
+
+   ```bash
+   git rebase --continue
+   ```
+
+   o, si estabas haciendo un `merge`, simplemente termina con `git commit`.
+
+5. Finalmente, publica la rama actualizada:
+
+   ```bash
+   git push --force-with-lease
+   ```
+
+   > Usa `--force-with-lease` solo cuando hayas hecho _rebase_. Si utilizaste `git pull` sin rebase, un `git push` normal será
+   > suficiente.
+
+Tras este proceso, la advertencia desaparecerá y GitHub permitirá completar el _merge_.
+
 > 💡 No subas `sistemadecursos.db` si ya existe; puedes agregarlo al `.gitignore` para mantener privados tus datos.
 
 ### 2. Despliegue en Render (opción recomendada para empezar)
