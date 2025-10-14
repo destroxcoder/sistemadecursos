@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+{% block title %}Panel de Administración{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Panel de administración</h1>
+<div class="row g-4">
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5">Registrar nuevo alumno</h2>
+        <form method="post" action="{{ url_for('crear_alumno') }}" class="row g-2">
+          <div class="col-12">
+            <label class="form-label">Nombre y apellidos</label>
+            <input type="text" name="nombre" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">DNI</label>
+            <input type="text" name="dni" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Celular</label>
+            <input type="text" name="celular" class="form-control">
+          </div>
+          <div class="col-12 d-grid">
+            <button type="submit" class="btn btn-primary">Registrar alumno</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5">Agregar nuevo curso</h2>
+        <form method="post" action="{{ url_for('crear_curso') }}" class="row g-2">
+          <div class="col-12">
+            <label class="form-label">Nombre del curso</label>
+            <input type="text" name="nombre" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Horas</label>
+            <input type="number" name="horas" class="form-control" min="1" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Créditos</label>
+            <input type="number" name="creditos" class="form-control" min="0" required>
+          </div>
+          <div class="col-12 d-grid">
+            <button type="submit" class="btn btn-dark">Agregar curso</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm mt-4">
+  <div class="card-body">
+    <h2 class="h5">Asignar curso y certificado</h2>
+    <form method="post" action="{{ url_for('crear_inscripcion') }}" enctype="multipart/form-data" class="row g-2">
+      <div class="col-md-4">
+        <label class="form-label">Alumno</label>
+        <select class="form-select" name="alumno_id" required>
+          <option value="">Selecciona un alumno</option>
+          {% for alumno in alumnos %}
+          <option value="{{ alumno['id'] }}">{{ alumno['nombre'] }} ({{ alumno['dni'] }})</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Curso</label>
+        <select class="form-select" name="curso_id" required>
+          <option value="">Selecciona un curso</option>
+          {% for curso in cursos %}
+          <option value="{{ curso['id'] }}">{{ curso['nombre'] }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Número de registro</label>
+        <input type="text" name="numero_registro" class="form-control" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Estado</label>
+        <select class="form-select" name="estado">
+          <option value="En Curso">En Curso</option>
+          <option value="Finalizado">Finalizado</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Certificado (PDF)</label>
+        <input type="file" name="certificado" accept="application/pdf" class="form-control">
+      </div>
+      <div class="col-12 d-grid">
+        <button type="submit" class="btn btn-success">Asignar curso</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="mt-5">
+  <h2 class="h5 mb-3">Listado de alumnos</h2>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>DNI</th>
+          <th>Celular</th>
+          <th>Actualizar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alumno in alumnos %}
+        <tr>
+          <td>{{ alumno['nombre'] }}</td>
+          <td>{{ alumno['dni'] }}</td>
+          <td>{{ alumno['celular'] or '—' }}</td>
+          <td>
+            <form method="post" action="{{ url_for('editar_alumno', alumno_id=alumno['id']) }}" class="row g-2">
+              <div class="col-md-5">
+                <input type="text" name="nombre" class="form-control form-control-sm" value="{{ alumno['nombre'] }}" required>
+              </div>
+              <div class="col-md-5">
+                <input type="text" name="celular" class="form-control form-control-sm" value="{{ alumno['celular'] }}">
+              </div>
+              <div class="col-md-2 d-grid">
+                <button class="btn btn-sm btn-outline-primary" type="submit">Guardar</button>
+              </div>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="mt-5">
+  <h2 class="h5 mb-3">Listado de cursos</h2>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Curso</th>
+          <th>Horas</th>
+          <th>Créditos</th>
+          <th>Actualizar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for curso in cursos %}
+        <tr>
+          <td>{{ curso['nombre'] }}</td>
+          <td>{{ curso['horas'] }}</td>
+          <td>{{ curso['creditos'] }}</td>
+          <td>
+            <form method="post" action="{{ url_for('editar_curso', curso_id=curso['id']) }}" class="row g-2">
+              <div class="col-md-4">
+                <input type="text" name="nombre" class="form-control form-control-sm" value="{{ curso['nombre'] }}" required>
+              </div>
+              <div class="col-md-3">
+                <input type="number" name="horas" class="form-control form-control-sm" value="{{ curso['horas'] }}" min="1" required>
+              </div>
+              <div class="col-md-3">
+                <input type="number" name="creditos" class="form-control form-control-sm" value="{{ curso['creditos'] }}" min="0" required>
+              </div>
+              <div class="col-md-2 d-grid">
+                <button class="btn btn-sm btn-outline-primary" type="submit">Guardar</button>
+              </div>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="mt-5">
+  <h2 class="h5 mb-3">Inscripciones registradas</h2>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Curso</th>
+          <th>N° Registro</th>
+          <th>Estado</th>
+          <th>Certificado</th>
+          <th>Actualizar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for inscripcion in inscripciones %}
+        <tr>
+          <td>{{ inscripcion['alumno_nombre'] }}</td>
+          <td>{{ inscripcion['curso_nombre'] }}</td>
+          <td>{{ inscripcion['numero_registro'] }}</td>
+          <td>
+            <span class="badge {% if inscripcion['estado'] == 'Finalizado' %}bg-success{% else %}bg-secondary{% endif %}">
+              {{ inscripcion['estado'] }}
+            </span>
+          </td>
+          <td>
+            {% if inscripcion['certificado_url'] %}
+            <a class="btn btn-sm btn-outline-primary" href="{{ inscripcion['certificado_url'] }}" target="_blank">Ver certificado</a>
+            {% else %}
+            <span class="text-muted">No disponible</span>
+            {% endif %}
+          </td>
+          <td>
+            <form method="post" action="{{ url_for('editar_inscripcion', inscripcion_id=inscripcion['id']) }}" enctype="multipart/form-data" class="row g-2">
+              <div class="col-md-4">
+                <input type="text" name="numero_registro" class="form-control form-control-sm" value="{{ inscripcion['numero_registro'] }}" required>
+              </div>
+              <div class="col-md-3">
+                <select class="form-select form-select-sm" name="estado">
+                  <option value="En Curso" {% if inscripcion['estado'] == 'En Curso' %}selected{% endif %}>En Curso</option>
+                  <option value="Finalizado" {% if inscripcion['estado'] == 'Finalizado' %}selected{% endif %}>Finalizado</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <input type="file" name="certificado" accept="application/pdf" class="form-control form-control-sm">
+              </div>
+              <div class="col-md-2 d-grid">
+                <button class="btn btn-sm btn-outline-success" type="submit">Actualizar</button>
+              </div>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

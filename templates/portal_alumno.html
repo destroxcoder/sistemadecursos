@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Mi Portal de Cursos{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-12">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+          <div>
+            <h1 class="h4 mb-0">Hola, {{ alumno_nombre }} 👋</h1>
+            <p class="text-muted mb-0">Estos son tus cursos registrados.</p>
+          </div>
+          <a href="{{ url_for('salir') }}" class="btn btn-outline-primary mt-3 mt-md-0">Cerrar sesión</a>
+        </div>
+        {% if cursos %}
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Curso</th>
+                <th>Horas</th>
+                <th>Créditos</th>
+                <th>N° de Registro</th>
+                <th>Estado</th>
+                <th>Certificado</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for curso in cursos %}
+              <tr>
+                <td>{{ curso['curso_nombre'] }}</td>
+                <td>{{ curso['horas'] }}</td>
+                <td>{{ curso['creditos'] }}</td>
+                <td>{{ curso['numero_registro'] }}</td>
+                <td>
+                  <span class="badge {% if curso['estado'] == 'Finalizado' %}bg-success{% else %}bg-secondary{% endif %}">
+                    {{ curso['estado'] }}
+                  </span>
+                </td>
+                <td>
+                  {% if curso['certificado_url'] %}
+                  <a class="btn btn-sm btn-primary" href="{{ curso['certificado_url'] }}" target="_blank">Descargar</a>
+                  {% else %}
+                  <button class="btn btn-sm btn-outline-secondary" disabled>No disponible</button>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="text-center py-5">
+          <p class="text-muted">Aún no tienes cursos asignados. Comunícate con el administrador.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
