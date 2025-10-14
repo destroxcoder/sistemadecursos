@@ -42,21 +42,43 @@ Si deseas que la aplicación esté disponible en tu red local, ejecuta `flask --
 ### 1. Prepara el repositorio en GitHub
 
 1. Crea un repositorio vacío llamado, por ejemplo, `sistemadecursos` en tu cuenta de GitHub.
-2. En tu máquina local inicializa Git (si todavía no lo hiciste):
+2. Abre una terminal en la carpeta del proyecto y verifica que Git reconozca los archivos modificados:
+
+   ```bash
+   git status
+   ```
+
+3. Si es la primera vez que usas Git en esta carpeta, inicializa el repositorio y agrega todo el contenido:
 
    ```bash
    git init
    git add .
-   git commit -m "Inicializa sistema de certificados"
    ```
 
-3. Agrega el remoto y sube el código:
+   > Si ya estaba inicializado, basta con ejecutar `git add .` para preparar los cambios recientes.
+
+4. Crea un commit con un mensaje descriptivo (por ejemplo, "Prepara sistema de certificados"):
+
+   ```bash
+   git commit -m "Prepara sistema de certificados"
+   ```
+
+5. Enlaza tu repositorio local con el remoto recién creado en GitHub:
 
    ```bash
    git remote add origin https://github.com/<TU_USUARIO>/sistemadecursos.git
+   ```
+
+   > Si ya tenías configurado el remoto, confirma su URL con `git remote -v`.
+
+6. Define `main` como rama principal (o usa `master` si prefieres ese nombre) y sube el commit:
+
+   ```bash
    git branch -M main
    git push -u origin main
    ```
+
+7. A partir de aquí, cada vez que hagas cambios repite `git add .`, `git commit -m "mensaje"` y `git push` para publicarlos.
 
 > 💡 No subas `sistemadecursos.db` si ya existe; puedes agregarlo al `.gitignore` para mantener privados tus datos.
 
@@ -69,7 +91,7 @@ Si deseas que la aplicación esté disponible en tu red local, ejecuta `flask --
 
    - **Runtime:** Python 3
    - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `flask --app app run --host 0.0.0.0 --port 10000`
+   - **Start Command:** `gunicorn --bind 0.0.0.0:10000 app:app`
    - **Region:** la más cercana a tus usuarios
 
    Render detecta automáticamente que la aplicación escucha en el puerto `10000` (configúralo en la sección _Advanced_ si es necesario).
@@ -92,7 +114,7 @@ Para futuros cambios, solo haz `git push` a la rama principal; Render desplegar�
 
 Si necesitas mayor control o escalar el proyecto, evalúa estas alternativas:
 
-- **Google Cloud Run** o **AWS Elastic Beanstalk** utilizando un contenedor Docker con Gunicorn.
+- **Google Cloud Run** o **AWS Elastic Beanstalk** utilizando un contenedor Docker con Gunicorn (ya incluido en `requirements.txt`).
 - **Microsoft Azure App Service** con un _startup command_ similar al de Render.
 - **Vercel** empleando un adaptador WSGI como `vercel-python-wsgi`.
 
